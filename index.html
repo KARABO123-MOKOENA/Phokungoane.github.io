@@ -4,7 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHOKUNGOANE ATTORNEYS INC | Your Home of Legal Solutions</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Phokungoane Attorneys Inc - Your Home of Legal Solutions. Specializing in Road Accident Fund Claims, Medical Negligence, Estate Administration, and more. Contact us today!">
+    <meta name="keywords" content="phokungoane attorneys, road accident fund claims, medical negligence, estate administration, civil litigation, divorce law, legal services South Africa">
+    <meta name="author" content="Phokungoane Attorneys Inc">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Phokungoane Attorneys Inc - Your Home of Legal Solutions">
+    <meta property="og:description" content="Expert legal representation for Road Accident Fund Claims, Medical Negligence, Estate Administration and more. We come to you anywhere in South Africa.">
+    <meta property="og:url" content="https://phokungoaneattorneys.co.za">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Phokungoane Attorneys Inc">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Phokungoane Attorneys Inc - Your Home of Legal Solutions">
+    <meta name="twitter:description" content="Expert legal representation for Road Accident Fund Claims, Medical Negligence, Estate Administration and more.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://phokungoaneattorneys.co.za">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Business Profile Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LegalService",
+        "name": "Phokungoane Attorneys Inc",
+        "description": "Your Home of Legal Solutions - Specializing in Road Accident Fund Claims and Legal Services throughout South Africa",
+        "url": "https://phokungoaneattorneys.co.za",
+        "telephone": "+27-60-377-9002",
+        "email": "phokungoaneattorneys@gmail.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "House no:1514 Zone A",
+            "addressLocality": "Namakgale",
+            "addressRegion": "Limpopo",
+            "addressCountry": "South Africa"
+        },
+        "areaServed": "South Africa",
+        "serviceType": [
+            "Road Accident Fund Claims",
+            "Medical Negligence Claims",
+            "Estate Administration",
+            "Civil Litigation",
+            "Bill of Costs",
+            "Divorce Proceedings"
+        ],
+        "openingHours": "Mo-Fr 08:00-17:00"
+    }
+    </script>
+    
     <style>
         /* Base Styles - Morgan & Morgan Color Scheme */
         :root {
@@ -520,6 +576,27 @@
             height: 150px;
             resize: vertical;
         }
+
+        /* Form Success Message */
+        .form-success {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            border: 1px solid #c3e6cb;
+        }
+
+        .form-error {
+            display: none;
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            border: 1px solid #f5c6cb;
+        }
         
         /* Footer */
         footer {
@@ -833,7 +910,13 @@
                 </div>
                 <div class="contact-form">
                     <h3>Send Us a Message</h3>
-                    <form id="contactForm">
+                    <div id="form-success" class="form-success">
+                        Thank you for your message! We will contact you soon to discuss your legal matter.
+                    </div>
+                    <div id="form-error" class="form-error">
+                        There was an error sending your message. Please try again or contact us directly.
+                    </div>
+                    <form id="contactForm" action="https://formspree.io/f/xgvpovlk" method="POST">
                         <div class="form-group">
                             <label for="name">Full Name</label>
                             <input type="text" id="name" name="name" required>
@@ -911,11 +994,47 @@
     </footer>
 
     <script>
-        // Simple form submission handler
+        // Form submission handler
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Thank you for your message. We will contact you soon to discuss your legal matter.');
-            this.reset();
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Send to Formspree
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Show success message
+                    document.getElementById('form-success').style.display = 'block';
+                    document.getElementById('form-error').style.display = 'none';
+                    this.reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            })
+            .catch(error => {
+                // Show error message
+                document.getElementById('form-error').style.display = 'block';
+                document.getElementById('form-success').style.display = 'none';
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
         });
 
         // Mobile menu toggle
